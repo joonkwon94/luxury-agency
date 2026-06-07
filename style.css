@@ -134,8 +134,7 @@ nav a:hover::after {
   opacity: 0;
   transform: translateY(20px);
   animation: fadeUp 1.5s ease forwards 0.8s;
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
+  font-family: 'Noto Serif KR', 'Playfair Display', serif;
 }
 
 .btn-primary {

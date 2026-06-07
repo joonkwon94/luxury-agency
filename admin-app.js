@@ -78,6 +78,8 @@ document.addEventListener("DOMContentLoaded", () => {
         color: document.getElementById('color').value,
         size: document.getElementById('size').value,
         material: document.getElementById('material').value,
+        imageUrl: document.getElementById('imageUrl') ? document.getElementById('imageUrl').value : "",
+        displayYn: document.getElementById('displayYn') ? document.getElementById('displayYn').value : "N",
         url: document.getElementById('url').value,
         channel: document.getElementById('channel').value,
         memo: document.getElementById('memo').value,
