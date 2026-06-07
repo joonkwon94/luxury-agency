@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Le Meyou Admin Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin-style.css">
+  <!-- Chart.js for BI -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="dashboard-container">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>Le Meyou</h2>
+        <p>Admin Portal</p>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-target="ai-sourcing"><span>🤖</span> AI 상품 수집</a>
+        <a href="#" class="nav-item" data-target="tax-cloud"><span>📊</span> 세무 & 클라우드</a>
+        <a href="#" class="nav-item" data-target="logistics-vip"><span>🚚</span> 물류 & VIP 실적</a>
+        <a href="#" class="nav-item" data-target="crm-bi"><span>👥</span> CRM & 통계</a>
+      </nav>
+      <div class="sidebar-footer">
+        <p>Logged in as <strong>Sourcing Manager</strong></p>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="topbar">
+        <div class="search-bar">
+          <input type="text" placeholder="Search orders, tracking numbers, or clients...">
+        </div>
+        <div class="user-actions">
+          <button class="btn-notification">🔔</button>
+          <div class="avatar">SM</div>
+        </div>
+      </header>
+
+      <!-- TAB 1: AI Sourcing -->
+      <section id="ai-sourcing" class="tab-content active">
+        <h1 class="page-title">AI Sourcing & IP Defense</h1>
+        <div class="card">
+          <h3>글로벌 마켓 대량 수집 (URL 입력)</h3>
+          <div class="input-group">
+            <input type="url" placeholder="https://www.farfetch.com/...">
+            <button class="btn-primary">AI 수집 시작</button>
+          </div>
+        </div>
+        
+        <div class="grid-2">
+          <div class="card">
+            <h3>이미지 번역 & 에디터 (저작권 방어)</h3>
+            <div class="image-editor-mock">
+              <div class="original-img">Original (French)</div>
+              <div class="translated-img">Translated (Korean) & Cleaned</div>
+            </div>
+            <button class="btn-secondary" style="margin-top:15px; width:100%;">네이버 스마트스토어 전송</button>
+          </div>
+          <div class="card">
+            <h3>명품 특화 옵션 매핑</h3>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>브랜드</th>
+                  <th>현지 사이즈</th>
+                  <th>한국 사이즈</th>
+                  <th>컬러</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Loro Piana</td>
+                  <td>IT 42</td>
+                  <td>M (66)</td>
+                  <td>Beige (베이지)</td>
+                </tr>
+                <tr>
+                  <td>Hermes</td>
+                  <td>FR 38</td>
+                  <td>S (55)</td>
+                  <td>Noir (블랙)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: Tax & Cloud -->
+      <section id="tax-cloud" class="tab-content">
+        <h1 class="page-title">세무 소명 자동화 & 아카이빙</h1>
+        
+        <div class="card margin-calculator">
+          <div class="calc-header">
+            <h3>마진(수수료) 자동 계산 장부</h3>
+            <button class="btn-primary">엑셀 다운로드 (홈택스용)</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>주문일자</th>
+                <th>고객 결제액 (매출)</th>
+                <th>매입 원가</th>
+                <th>관부가세/물류비</th>
+                <th>구매대행 수수료 (과세표준)</th>
+                <th>예상 부가세</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2026-06-07</td>
+                <td>₩ 3,500,000</td>
+                <td>₩ 2,800,000</td>
+                <td>₩ 250,000</td>
+                <td class="highlight">₩ 450,000</td>
+                <td>₩ 45,000</td>
+              </tr>
+              <tr>
+                <td>2026-06-06</td>
+                <td>₩ 1,200,000</td>
+                <td>₩ 950,000</td>
+                <td>₩ 100,000</td>
+                <td class="highlight">₩ 150,000</td>
+                <td>₩ 15,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>증빙 서류 클라우드 아카이빙</h3>
+          <ul class="doc-list">
+            <li>📄 [주문 #1029] 한-EU FTA 원산지 증명 인보이스.pdf <span class="badge success">Verified</span></li>
+            <li>📄 [주문 #1028] 수입 세금계산서 (관세청).pdf <span class="badge success">Verified</span></li>
+            <li>📄 [주문 #1027] 현지 부티크 영수증.jpg <span class="badge warning">Pending</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- TAB 3: Logistics & VIP -->
+      <section id="logistics-vip" class="tab-content">
+        <h1 class="page-title">실시간 물류 추적 & VIP 대시보드</h1>
+        
+        <div class="grid-2">
+          <div class="card">
+            <h3>End-to-End 물류 트래킹 (Valex 연동)</h3>
+            <div class="tracking-timeline">
+              <div class="step completed">현지 B2B 발송 완료 (밀라노)</div>
+              <div class="step completed">유니패스 수입 통관 완료</div>
+              <div class="step active">발렉스 특수 물류 인계 (국내)</div>
+              <div class="step">고객 자택 배송 예정</div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <h3>백화점 VIP 실적 모니터링</h3>
+            <div class="vip-stats">
+              <div class="vip-account">
+                <h4>본인 계정 (신세계)</h4>
+                <div class="progress-bar"><div class="fill" style="width: 80%;"></div></div>
+                <p>₩ 96,000,000 / ₩ 120,000,000 (Black Diamond Target)</p>
+              </div>
+              <div class="vip-account" style="margin-top: 20px;">
+                <h4>가족 계정 (샤넬 쿼터용)</h4>
+                <div class="progress-bar"><div class="fill" style="width: 50%;"></div></div>
+                <p>₩ 25,000,000 / ₩ 50,000,000 (Platinum Target)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: CRM & BI -->
+      <section id="crm-bi" class="tab-content">
+        <h1 class="page-title">고객 관리(CRM) & 판매 통계(BI)</h1>
+        
+        <div class="grid-2">
+          <div class="card">
+            <h3>원스톱 주문/CS 처리</h3>
+            <div class="cs-ticket">
+              <strong>[에르메스 피코탄 문의]</strong>
+              <p>"혹시 에토프 금장 18사이즈 지금 오더하면 얼마나 걸릴까요?"</p>
+              <div class="ticket-actions">
+                <button class="btn-secondary">답변하기</button>
+                <button class="btn-secondary">현지 재고 확인</button>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <h3>구매 전환율 & 유입수 분석</h3>
+            <div style="height: 200px;">
+              <canvas id="salesChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="admin-app.js"></script>
+</body>
+</html>
