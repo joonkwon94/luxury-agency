@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Dynamic Gallery Fetching
-  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby0OyyGNz6LpV_Aq6-ul4LjlcIs46teyzLbfCc1cqwe0_sOBPo6GycgRg-U_AUia_6W/exec";
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyfOT2ZntPayJ7_o1IqfHHKqeDfU7vVC36G5lvk8lsSojgDeeSXwzy7BTxIe7Ua-NfylQ/exec";
   const galleryGrid = document.getElementById('dynamic-gallery');
 
   if (galleryGrid) {
