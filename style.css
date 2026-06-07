@@ -332,6 +332,40 @@ section {
   transform: scale(1.05);
 }
 
+.gallery-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 24px 20px 20px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.72));
+  color: white;
+  transform: translateY(8px);
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
+}
+
+.gallery-item:hover .gallery-caption {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gallery-caption h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  margin-bottom: 5px;
+  color: white;
+  font-weight: 400;
+}
+
+.gallery-caption p {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  opacity: 0.85;
+  color: white;
+  letter-spacing: 0.5px;
+}
+
 /* Contact */
 .contact-section {
   text-align: center;

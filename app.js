@@ -13,48 +13,81 @@ document.addEventListener("DOMContentLoaded", () => {
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyfOT2ZntPayJ7_o1IqfHHKqeDfU7vVC36G5lvk8lsSojgDeeSXwzy7BTxIe7Ua-NfylQ/exec";
   const galleryGrid = document.getElementById('dynamic-gallery');
 
+  // Sample luxury items (shown as seed data)
+  const demoItems = [
+    {
+      brand: "Hermès",
+      product: "Birkin 25 — Togo Etoupe",
+      imageUrl: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&q=80"
+    },
+    {
+      brand: "Chanel",
+      product: "Classic Flap — Black Caviar",
+      imageUrl: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80"
+    },
+    {
+      brand: "Louis Vuitton",
+      product: "Capucines MM — Cognac",
+      imageUrl: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80"
+    },
+    {
+      brand: "Hermès",
+      product: "Kelly 28 — Gold Epsom",
+      imageUrl: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=800&q=80"
+    },
+    {
+      brand: "Bottega Veneta",
+      product: "Jodie Hobo — Intrecciato Parakeet",
+      imageUrl: "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&q=80"
+    },
+    {
+      brand: "Dior",
+      product: "Lady Dior MM — Cannage Black",
+      imageUrl: "https://images.unsplash.com/photo-1594938298603-c8148c4b4a8e?w=800&q=80"
+    }
+  ];
+
+  const renderGallery = (liveItems) => {
+    galleryGrid.innerHTML = '';
+
+    // Merge: live items (Y) first, then demo items
+    const allItems = [...liveItems, ...demoItems];
+
+    allItems.forEach((item, index) => {
+      const imageUrl = item.imageUrl || item['이미지 URL'] || '';
+      const brand = item.brand || item['브랜드명'] || 'Le Meyou';
+      const product = item.product || item['상품명'] || 'Exclusive Piece';
+
+      const galleryItem = document.createElement('div');
+      galleryItem.className = 'gallery-item';
+      galleryItem.style.transitionDelay = `${index * 0.15}s`;
+
+      galleryItem.innerHTML = `
+        <img src="${imageUrl}" alt="${brand} ${product}" onerror="this.parentElement.style.display='none'">
+        <div class="gallery-caption">
+          <h4>${brand}</h4>
+          <p>${product}</p>
+        </div>
+      `;
+
+      galleryGrid.appendChild(galleryItem);
+      observer.observe(galleryItem);
+    });
+  };
+
   if (galleryGrid) {
     fetch(GOOGLE_SCRIPT_URL)
       .then(response => response.json())
       .then(data => {
-        // Filter items that have "홈페이지 전시 여부" set to 'Y', 'y', 'Yes', 'yes', '전시', or 'TRUE'
         const displayItems = data.filter(item => {
-          const displayFlag = (item['홈페이지 전시 여부'] || item['홈페이지 전시'] || '').toString().trim().toUpperCase();
-          return ['Y', 'YES', '전시', 'TRUE'].includes(displayFlag);
+          const flag = (item['홈페이지 전시 여부'] || '').toString().trim().toUpperCase();
+          return ['Y', 'YES', '전시', 'TRUE'].includes(flag);
         });
-
-        if (displayItems.length === 0) {
-          galleryGrid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#888;">Currently curating our exclusive collection.</p>`;
-          return;
-        }
-
-        // Render the items
-        displayItems.reverse().forEach((item, index) => {
-          const imageUrl = item['이미지 URL'] || item['사진 주소'] || './images/collection_1.png'; // Fallback
-          const brand = item['브랜드명'] || 'Le Meyou';
-          const product = item['상품명'] || 'Exclusive Piece';
-          
-          const galleryItem = document.createElement('div');
-          galleryItem.className = 'gallery-item';
-          galleryItem.style.transitionDelay = `${index * 0.2}s`;
-          
-          galleryItem.innerHTML = `
-            <img src="${imageUrl}" alt="${brand} ${product}" onerror="this.src='./images/collection_3.png'">
-            <div style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white;">
-              <h4 style="font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 5px; color: white;">${brand}</h4>
-              <p style="font-family: 'Inter', sans-serif; font-size: 13px; opacity: 0.9;">${product}</p>
-            </div>
-          `;
-          
-          galleryGrid.appendChild(galleryItem);
-          
-          // Observe for fade-in effect
-          observer.observe(galleryItem);
-        });
+        renderGallery(displayItems);
       })
-      .catch(error => {
-        console.error('Error fetching gallery data:', error);
-        galleryGrid.innerHTML = `<p style="grid-column: 1/-1; text-align:center; color:#888;">Unable to load the collection at this time.</p>`;
+      .catch(() => {
+        // If fetch fails, just show demo items
+        renderGallery([]);
       });
   }
 
