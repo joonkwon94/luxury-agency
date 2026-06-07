@@ -47,22 +47,23 @@ document.addEventListener("DOMContentLoaded", () => {
     const feeRate = parseFloat(document.getElementById('marketFeeRate').value) || 0;
 
     const feeAmount = sellingPrice * (feeRate / 100);
-    marketFeeInput.value = feeAmount.toFixed(0);
+    if(marketFeeInput) marketFeeInput.value = feeAmount.toFixed(0);
 
     const margin = sellingPrice - cost - overseasShipping - customs - domesticShipping - feeAmount;
-    finalMarginInput.value = margin.toFixed(0);
+    if(finalMarginInput) finalMarginInput.value = margin.toFixed(0);
   };
 
   calcInputs.forEach(input => {
     input.addEventListener('input', calculateMargin);
   });
 
-  // Google Sheets Integration Logic
+  // ** IMPORTANT: Replace this with your actual Web App URL after creating the Apps Script **
+  const GOOGLE_SCRIPT_URL = "YOUR_GOOGLE_SCRIPT_WEB_APP_URL";
+
+  // Form Submit Logic (Write to Sheets)
   const sourcingForm = document.getElementById('sourcingForm');
   const submitBtn = document.getElementById('submitBtn');
   const formStatus = document.getElementById('formStatus');
-
-  const GOOGLE_SCRIPT_URL = "YOUR_GOOGLE_SCRIPT_WEB_APP_URL";
 
   if (sourcingForm) {
     sourcingForm.addEventListener('submit', (e) => {
@@ -79,6 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
         material: document.getElementById('material').value,
         url: document.getElementById('url').value,
         channel: document.getElementById('channel').value,
+        memo: document.getElementById('memo').value,
         cost: document.getElementById('cost').value,
         fta: document.getElementById('fta').value,
         overseasShipping: document.getElementById('overseasShipping').value,
@@ -96,7 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
       formStatus.style.color = 'inherit';
 
       if(GOOGLE_SCRIPT_URL === "YOUR_GOOGLE_SCRIPT_WEB_APP_URL") {
-          formStatus.innerText = "❌ 경고: 구글 Apps Script 웹앱 URL이 연동되지 않았습니다. 코드를 확인해주세요.";
+          formStatus.innerText = "❌ 경고: 구글 Apps Script 웹앱 URL이 연동되지 않았습니다.";
           formStatus.style.color = "red";
           submitBtn.disabled = false;
           submitBtn.innerText = '구글 시트에 18개 항목 완벽 전송';
@@ -124,6 +126,61 @@ document.addEventListener("DOMContentLoaded", () => {
         submitBtn.disabled = false;
         submitBtn.innerText = '구글 시트에 18개 항목 완벽 전송';
       });
+    });
+  }
+
+  // Fetch Logic (Read from Sheets)
+  const refreshDataBtn = document.getElementById('refreshDataBtn');
+  const historyTableBody = document.getElementById('historyTableBody');
+
+  if (refreshDataBtn && historyTableBody) {
+    refreshDataBtn.addEventListener('click', () => {
+      
+      if(GOOGLE_SCRIPT_URL === "YOUR_GOOGLE_SCRIPT_WEB_APP_URL") {
+        historyTableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:red;">❌ 구글 스크립트 URL이 연동되지 않았습니다.</td></tr>`;
+        return;
+      }
+
+      refreshDataBtn.disabled = true;
+      refreshDataBtn.innerText = '데이터 불러오는 중...';
+      historyTableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px;">데이터를 불러오고 있습니다...</td></tr>`;
+
+      fetch(GOOGLE_SCRIPT_URL)
+        .then(response => response.json())
+        .then(data => {
+          // data will be an array of objects
+          if(data.length === 0) {
+            historyTableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px;">아직 저장된 소싱 데이터가 없습니다.</td></tr>`;
+            return;
+          }
+
+          historyTableBody.innerHTML = '';
+          // Render data (Assuming the Apps Script returns objects matching the headers)
+          // We'll reverse it so newest is on top
+          data.reverse().forEach(row => {
+            const dateStr = row['입력시간'] ? new Date(row['입력시간']).toLocaleString() : '-';
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${dateStr}</td>
+              <td style="font-weight:600;">${row['브랜드명'] || '-'}</td>
+              <td>${row['상품명'] || '-'}</td>
+              <td>${row['색상'] || ''} / ${row['사이즈'] || ''}</td>
+              <td>₩ ${Number(row['실제 매입 단가(원화 환산)'] || 0).toLocaleString()}</td>
+              <td>₩ ${Number(row['판매가'] || 0).toLocaleString()}</td>
+              <td style="color:var(--success); font-weight:600;">₩ ${Number(row['최종 마진'] || 0).toLocaleString()}</td>
+              <td>${row['관리자 메모'] || '-'}</td>
+            `;
+            historyTableBody.appendChild(tr);
+          });
+        })
+        .catch(error => {
+          console.error(error);
+          historyTableBody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px; color:red;">❌ 데이터를 불러오지 못했습니다. 앱스 스크립트 설정을 확인하세요.</td></tr>`;
+        })
+        .finally(() => {
+          refreshDataBtn.disabled = false;
+          refreshDataBtn.innerText = '🔄 데이터 불러오기';
+        });
     });
   }
 });

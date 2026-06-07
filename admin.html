@@ -19,6 +19,7 @@
       </div>
       <nav class="sidebar-nav">
         <a href="#" class="nav-item active" data-target="ai-sourcing">AI 상품 수집 (18종)</a>
+        <a href="#" class="nav-item" data-target="sourcing-history">소싱 내역 & 재고 현황</a>
         <a href="#" class="nav-item" data-target="tax-cloud">세무 & 클라우드</a>
         <a href="#" class="nav-item" data-target="logistics-vip">물류 & VIP 실적</a>
         <a href="#" class="nav-item" data-target="crm-bi">CRM & 통계</a>
@@ -99,10 +100,15 @@
 
             <div class="input-group">
               <label>FTA 증명</label>
-              <select id="fta">
+              <select id="fta" style="padding:12px; border:1px solid var(--border); border-radius:6px; font-family:inherit;">
                 <option value="가능 (관세 면제)">가능 (관세 면제)</option>
                 <option value="불가능">불가능</option>
               </select>
+            </div>
+
+            <div class="input-group" style="margin-top:10px;">
+              <label>관리자 메모</label>
+              <input type="text" id="memo" placeholder="예: 한 피스 남음">
             </div>
 
             <h4 style="margin-top:15px; margin-bottom:5px; border-bottom:1px solid var(--border); padding-bottom:5px;">3. 원가 및 자동 마진 계산 (단위: 원)</h4>
@@ -156,7 +162,43 @@
         </div>
       </section>
 
-      <!-- TAB 2: Tax & Cloud -->
+      <!-- NEW TAB: Sourcing History & Inventory -->
+      <section id="sourcing-history" class="tab-content">
+        <h1 class="page-title">소싱 내역 & 재고 현황</h1>
+        
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <p style="color:var(--text-muted); font-size:14px;">구글 스프레드시트와 실시간으로 동기화된 데이터입니다.</p>
+            <button id="refreshDataBtn" class="btn-primary" style="padding:8px 16px;">🔄 데이터 불러오기</button>
+          </div>
+          
+          <div style="overflow-x: auto;">
+            <table class="data-table" id="historyTable">
+              <thead>
+                <tr>
+                  <th>입력시간</th>
+                  <th>브랜드</th>
+                  <th>상품명</th>
+                  <th>색상/사이즈</th>
+                  <th>매입 단가</th>
+                  <th>판매가</th>
+                  <th>마진</th>
+                  <th>메모</th>
+                </tr>
+              </thead>
+              <tbody id="historyTableBody">
+                <tr>
+                  <td colspan="8" style="text-align:center; padding:30px; color:var(--text-muted);">
+                    데이터를 불러오려면 우측 상단의 '데이터 불러오기' 버튼을 클릭해주세요.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: Tax & Cloud -->
       <section id="tax-cloud" class="tab-content">
         <h1 class="page-title">세무 소명 자동화 & 아카이빙</h1>
         <div class="card margin-calculator">
@@ -175,13 +217,13 @@
         </div>
       </section>
 
-      <!-- TAB 3: Logistics & VIP -->
+      <!-- TAB: Logistics & VIP -->
       <section id="logistics-vip" class="tab-content">
         <h1 class="page-title">실시간 물류 추적 & VIP 대시보드</h1>
         <p>Dashboard visualization loaded successfully.</p>
       </section>
 
-      <!-- TAB 4: CRM & BI -->
+      <!-- TAB: CRM & BI -->
       <section id="crm-bi" class="tab-content">
         <h1 class="page-title">고객 관리(CRM) & 판매 통계(BI)</h1>
         <div style="height: 200px; max-width: 600px; margin-top:20px;">
