@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
       galleryItem.style.transitionDelay = `${index * 0.12}s`;
 
       galleryItem.innerHTML = `
-        <img src="${imageUrl}" alt="${brand} ${product}" onerror="this.parentElement.style.display='none'">
+        <img src="${imageUrl}" alt="${brand} ${product}" loading="lazy" onerror="this.parentElement.style.display='none'">
         <div class="gallery-caption">
           <h4>${brand}</h4>
           <p>${product}</p>
@@ -114,4 +114,68 @@ document.addEventListener("DOMContentLoaded", () => {
         // Demo items already showing, do nothing
       });
   }
+
+  // ─── Page Loader ────────────────────────────────────────────────
+  const loader = document.getElementById('page-loader');
+  if (loader) {
+    setTimeout(() => {
+      loader.classList.add('hidden');
+    }, 1500);
+  }
+
+  // ─── Floating KakaoTalk & Back-to-Top visibility on scroll ──────
+  const kakaoFloat = document.getElementById('kakao-float');
+  const backToTop  = document.getElementById('back-to-top');
+
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+
+    // Kakao button appears after 300px
+    if (kakaoFloat) {
+      if (scrollY > 300) {
+        kakaoFloat.classList.add('visible');
+      } else {
+        kakaoFloat.classList.remove('visible');
+      }
+    }
+
+    // Back-to-top appears after 500px
+    if (backToTop) {
+      if (scrollY > 500) {
+        backToTop.classList.add('visible');
+      } else {
+        backToTop.classList.remove('visible');
+      }
+    }
+  });
+
+  // Back-to-top click handler
+  if (backToTop) {
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // ─── Active Nav Highlighting (IntersectionObserver) ─────────────
+  const navLinks = document.querySelectorAll('nav a[href^="#"]');
+  const sectionIds = [...navLinks].map(a => a.getAttribute('href').slice(1));
+  const sections = sectionIds
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
+
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+        });
+      }
+    });
+  }, {
+    rootMargin: '-30% 0px -60% 0px',
+    threshold: 0
+  });
+
+  sections.forEach(sec => navObserver.observe(sec));
 });
