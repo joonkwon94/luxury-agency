@@ -64,8 +64,11 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       
       const sourceUrl = document.getElementById('sourceUrl').value;
+      const brandName = document.getElementById('brandName').value;
       const productName = document.getElementById('productName').value;
+      const productOptions = document.getElementById('productOptions').value;
       const costPrice = document.getElementById('costPrice').value;
+      const adminMemo = document.getElementById('adminMemo').value;
 
       submitBtn.disabled = true;
       submitBtn.innerText = '저장 중...';
@@ -76,26 +79,27 @@ document.addEventListener("DOMContentLoaded", () => {
           formStatus.innerText = "❌ 경고: 구글 Apps Script 웹앱 URL이 연동되지 않았습니다. 코드를 확인해주세요.";
           formStatus.style.color = "red";
           submitBtn.disabled = false;
-          submitBtn.innerText = '구글 시트에 저장하기';
+          submitBtn.innerText = '구글 시트에 안전하게 저장';
           return;
       }
 
-      // Send data to Google Sheets via Apps Script Web App
       fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors', // Bypass CORS for simple POST
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: new URLSearchParams({
           'url': sourceUrl,
+          'brand': brandName,
           'product': productName,
+          'options': productOptions,
           'cost': costPrice,
+          'memo': adminMemo,
           'timestamp': new Date().toISOString()
         })
       })
       .then(response => {
-        // Because of no-cors, response is opaque. We assume success if no network error.
         formStatus.innerText = '✅ 성공적으로 구글 시트에 저장되었습니다!';
         formStatus.style.color = 'green';
         sourcingForm.reset();
@@ -107,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .finally(() => {
         submitBtn.disabled = false;
-        submitBtn.innerText = '구글 시트에 저장하기';
+        submitBtn.innerText = '구글 시트에 안전하게 저장';
       });
     });
   }

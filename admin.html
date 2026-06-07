@@ -49,22 +49,42 @@
         <div class="card">
           <h3>소싱 상품 등록 (Sourcing Team)</h3>
           <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">
-            아래 정보를 입력하고 저장하면 Google Spread Sheet에 자동으로 데이터가 쌓입니다.
+            현지 부티크나 해외 마켓에서 찾은 상품 정보를 입력하면 구글 시트 데이터베이스에 자동 축적됩니다.
           </p>
           <form id="sourcingForm" class="sourcing-form">
-            <div class="input-group">
-              <label>소싱 웹사이트 URL</label>
-              <input type="url" id="sourceUrl" required placeholder="예: https://www.farfetch.com/...">
+            <div class="grid-2" style="margin-top: 0;">
+              <div class="input-group">
+                <label>소싱 웹사이트 URL</label>
+                <input type="url" id="sourceUrl" required placeholder="예: https://www.farfetch.com/...">
+              </div>
+              <div class="input-group">
+                <label>브랜드명</label>
+                <input type="text" id="brandName" required placeholder="예: Loro Piana">
+              </div>
             </div>
+            
             <div class="input-group">
               <label>상품명</label>
-              <input type="text" id="productName" required placeholder="예: Loro Piana Summer Walk">
+              <input type="text" id="productName" required placeholder="예: Summer Walk Suede Loafers">
             </div>
+
+            <div class="grid-2" style="margin-top: 0;">
+              <div class="input-group">
+                <label>옵션 (색상 및 현지 사이즈)</label>
+                <input type="text" id="productOptions" placeholder="예: Sand / IT 42">
+              </div>
+              <div class="input-group">
+                <label>매입 원가 (현지 통화 또는 KRW)</label>
+                <input type="number" id="costPrice" required placeholder="예: 850000">
+              </div>
+            </div>
+
             <div class="input-group">
-              <label>매입 원가 (KRW)</label>
-              <input type="number" id="costPrice" required placeholder="예: 850000">
+              <label>관리자 메모 (현지 재고 현황 등)</label>
+              <input type="text" id="adminMemo" placeholder="예: 밀라노 부티크에 2피스 남음. 내일 오더해야 함.">
             </div>
-            <button type="submit" class="btn-primary" id="submitBtn">구글 시트에 저장하기</button>
+
+            <button type="submit" class="btn-primary" id="submitBtn" style="margin-top: 10px;">구글 시트에 안전하게 저장</button>
           </form>
           <div id="formStatus" style="margin-top: 15px; font-weight: 500; font-size: 14px;"></div>
         </div>
