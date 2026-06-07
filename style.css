@@ -342,8 +342,8 @@ section {
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
 }
 
 .gallery-item {
@@ -442,27 +442,27 @@ footer {
 /* Marquee Ticker Band */
 .marquee-band {
   width: 100%;
-  background-color: #1c1c1c;
+  background-color: #1a1a1a;
   overflow: hidden;
-  padding: 18px 0;
-  border-top: 1px solid #2e2e2e;
-  border-bottom: 1px solid #2e2e2e;
+  padding: 28px 0;
+  border-top: 1px solid rgba(212, 175, 55, 0.15);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.15);
 }
 
 .marquee-track {
   display: flex;
   white-space: nowrap;
-  animation: marquee-scroll 35s linear infinite;
+  animation: marquee-scroll 50s linear infinite;
   will-change: transform;
 }
 
 .marquee-content {
   display: inline-block;
   font-family: 'Playfair Display', serif;
-  font-size: 13px;
-  letter-spacing: 3px;
-  color: #c8b8a2;
-  padding-right: 0;
+  font-size: 18px;
+  letter-spacing: 5px;
+  color: rgba(212, 175, 55, 0.5);
+  text-transform: uppercase;
   flex-shrink: 0;
   min-width: 100%;
 }
@@ -898,4 +898,8 @@ nav a.active {
   nav ul { display: none; }
   #kakao-float { right: 16px; bottom: 16px; }
   #back-to-top  { right: 16px; bottom: 76px; }
+  .process-steps { grid-template-columns: 1fr; gap: 48px; }
+  .process-steps::before { display: none; }
+  .testimonials-grid { grid-template-columns: 1fr; gap: 32px; }
+  .marquee-content { font-size: 14px; letter-spacing: 3px; }
 }
