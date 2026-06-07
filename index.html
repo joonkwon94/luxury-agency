@@ -18,6 +18,7 @@
       <ul>
         <li><a href="#about">Philosophy</a></li>
         <li><a href="#sourcing">Sourcing</a></li>
+        <li><a href="#collection">Collection</a></li>
         <li><a href="#trust">Trust</a></li>
         <li><a href="#contact">Concierge</a></li>
       </ul>
@@ -26,7 +27,7 @@
 
   <main>
     <section class="hero">
-      <img src="file:///C:/Users/admin/.gemini/antigravity/brain/1ac554db-d36b-442b-be70-133bb53f5651/hero_bg_light_1780841739303.png" alt="Le Meyou Cashmere" class="hero-bg">
+      <img src="./images/hero_bg.png" alt="Le Meyou Cashmere" class="hero-bg">
       <div class="hero-content">
         <h1>Le Meyou</h1>
         <p>세상에서 가장 은밀하고 완벽한 하이엔드 명품 소싱</p>
@@ -63,7 +64,7 @@
           <p>Le Meyou는 상위 1%에게만 허락되는 퍼스널 쇼퍼 룸과 패스트트랙을 통해, 당신이 원하는 바로 그 피스를 가장 편안하게 확보해 드립니다.</p>
         </div>
         <div class="showcase-image">
-          <img src="file:///C:/Users/admin/.gemini/antigravity/brain/1ac554db-d36b-442b-be70-133bb53f5651/vip_lounge_light_1780841753257.png" alt="VIP Lounge">
+          <img src="./images/vip_lounge.png" alt="VIP Lounge">
         </div>
       </div>
 
@@ -74,8 +75,17 @@
           <p>Le Meyou는 명품 브랜드 공식 홈페이지에서 사용하는 현금 호송급 특수 물류망 'Valex(발렉스)'를 통해 고객님의 자택 문 앞까지 완벽하게 인도합니다.</p>
         </div>
         <div class="showcase-image">
-          <img src="file:///C:/Users/admin/.gemini/antigravity/brain/1ac554db-d36b-442b-be70-133bb53f5651/secure_delivery_light_1780841766047.png" alt="Valex Premium Delivery">
+          <img src="./images/secure_delivery.png" alt="Valex Premium Delivery">
         </div>
+      </div>
+    </section>
+
+    <section id="collection" class="gallery">
+      <h2 class="section-title">The Collection</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="./images/collection_1.png" alt="Cashmere texture"></div>
+        <div class="gallery-item"><img src="./images/collection_3.png" alt="Lifestyle"></div>
+        <div class="gallery-item"><img src="./images/collection_2.png" alt="Premium handbag"></div>
       </div>
     </section>
 
@@ -93,5 +103,23 @@
   </footer>
 
   <script src="app.js"></script>
+  <script>
+    // Add intersection observer for the new gallery items
+    document.addEventListener("DOMContentLoaded", () => {
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      
+      document.querySelectorAll('.gallery-item').forEach((el, index) => {
+        el.style.transitionDelay = `${index * 0.2}s`;
+        observer.observe(el);
+      });
+    });
+  </script>
 </body>
 </html>
