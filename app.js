@@ -9,11 +9,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Dynamic Gallery Fetching
+  // Intersection Observer (declared FIRST so renderGallery can use it)
+  const observer = new IntersectionObserver((entries, observerInstance) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observerInstance.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  // Existing elements animation
+  document.querySelectorAll('.feature-card, .showcase-text, .showcase-image').forEach(el => {
+    observer.observe(el);
+  });
+
+  // Dynamic Gallery
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyfOT2ZntPayJ7_o1IqfHHKqeDfU7vVC36G5lvk8lsSojgDeeSXwzy7BTxIe7Ua-NfylQ/exec";
   const galleryGrid = document.getElementById('dynamic-gallery');
 
-  // Sample luxury items (shown as seed data)
   const demoItems = [
     {
       brand: "Hermès",
@@ -37,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       brand: "Bottega Veneta",
-      product: "Jodie Hobo — Intrecciato Parakeet",
+      product: "Jodie Hobo — Intrecciato",
       imageUrl: "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&q=80"
     },
     {
@@ -48,9 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   const renderGallery = (liveItems) => {
+    if (!galleryGrid) return;
     galleryGrid.innerHTML = '';
-
-    // Merge: live items (Y) first, then demo items
     const allItems = [...liveItems, ...demoItems];
 
     allItems.forEach((item, index) => {
@@ -60,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const galleryItem = document.createElement('div');
       galleryItem.className = 'gallery-item';
-      galleryItem.style.transitionDelay = `${index * 0.15}s`;
+      galleryItem.style.transitionDelay = `${index * 0.12}s`;
 
       galleryItem.innerHTML = `
         <img src="${imageUrl}" alt="${brand} ${product}" onerror="this.parentElement.style.display='none'">
@@ -76,6 +89,9 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   if (galleryGrid) {
+    // Show demo items immediately, then update if live data available
+    renderGallery([]);
+
     fetch(GOOGLE_SCRIPT_URL)
       .then(response => response.json())
       .then(data => {
@@ -83,26 +99,12 @@ document.addEventListener("DOMContentLoaded", () => {
           const flag = (item['홈페이지 전시 여부'] || '').toString().trim().toUpperCase();
           return ['Y', 'YES', '전시', 'TRUE'].includes(flag);
         });
-        renderGallery(displayItems);
+        if (displayItems.length > 0) {
+          renderGallery(displayItems);
+        }
       })
       .catch(() => {
-        // If fetch fails, just show demo items
-        renderGallery([]);
+        // Demo items already showing, do nothing
       });
   }
-
-  // Intersection Observer for animations
-  const observer = new IntersectionObserver((entries, observerInstance) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observerInstance.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15 });
-
-  // Existing elements animation observing (features, showcases)
-  document.querySelectorAll('.feature-card, .showcase-text, .showcase-image').forEach(el => {
-    observer.observe(el);
-  });
 });
