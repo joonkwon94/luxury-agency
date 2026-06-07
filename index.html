@@ -3,120 +3,125 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Le Meyou | High-End Luxury Sourcing</title>
+  <title>Le Meyou | 르 미유</title>
+  <meta name="description" content="글로벌 B2B 소싱과 국내 최상위 VIP 인프라를 결합한 하이엔드 명품 소싱 에이전시. 당신이 찾던 그 제품, Le Meyou가 찾아드립니다.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Sticky Glassmorphism Header -->
-  <header class="navbar">
-    <div class="nav-container">
-      <div class="logo">Le Meyou</div>
-      <nav class="nav-links">
-        <a href="#philosophy">Philosophy</a>
-        <a href="#services">Services</a>
-        <a href="#collection">Collection</a>
-        <a href="#vip-contact" class="btn-outline">VIP Lounge</a>
-      </nav>
-    </div>
+  <header id="header">
+    <div class="logo">Le Meyou</div>
+    <nav>
+      <ul>
+        <li><a href="#about">Philosophy</a></li>
+        <li><a href="#sourcing">Sourcing</a></li>
+        <li><a href="#collection">Collection</a></li>
+        <li><a href="#trust">Trust</a></li>
+        <li><a href="#contact">Concierge</a></li>
+      </ul>
+    </nav>
   </header>
 
-  <!-- Fullscreen Hero -->
-  <section class="hero parallax">
-    <div class="hero-overlay"></div>
-    <div class="hero-content fade-in-up">
-      <h1>Le Meyou</h1>
-      <p>가장 완벽한 하이엔드 명품 소싱</p>
-      <a href="#vip-contact" class="btn-primary">Request Sourcing</a>
-    </div>
-  </section>
+  <main>
+    <section class="hero">
+      <img src="./images/hero_bg.png" alt="Le Meyou Cashmere" class="hero-bg">
+      <div class="hero-content">
+        <h1>Le Meyou</h1>
+        <p>가장 완벽한 하이엔드 명품 소싱</p>
+        <a href="#contact"><button class="btn-primary">Request Sourcing</button></a>
+      </div>
+    </section>
 
-  <!-- Philosophy Section (Editorial Layout) -->
-  <section id="philosophy" class="philosophy-section">
-    <div class="philosophy-content">
-      <h2>Quiet Luxury,<br>Exclusive For You.</h2>
-      <p>
-        르미유(Le Meyou)는 타협하지 않는 품질과 극도로 절제된 우아함을 추구합니다.<br>
-        구하기 힘든 희소성 높은 글로벌 하이엔드 피스들을 전 세계 부티크 네트워크를 통해<br>
-        가장 프라이빗하고 안전하게 당신의 문 앞으로 전달해 드립니다.
+    <section id="about" class="about">
+      <h2 class="section-title">The Art of Sourcing</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">I</div>
+          <h3>Europe B2B Direct</h3>
+          <p>이탈리아, 프랑스의 부티크와 직접 체결된 B2B 네트워크를 통해 가장 합리적인 가격과 확실한 제품을 우아하게 공급합니다.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">II</div>
+          <h3>Top-tier VIP Access</h3>
+          <p>국내 최상위 VIP 인프라를 활용하여 에르메스, 샤넬 등 구하기 힘든 쿼터제 브랜드의 제품을 기다림 없이 선점합니다.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">III</div>
+          <h3>Absolute Transparency</h3>
+          <p>한-EU FTA 원산지 증명 인보이스 및 정식 통관 서류를 투명하게 제공하여 흔들리지 않는 신뢰를 구축합니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="sourcing">
+      <div class="showcase">
+        <div class="showcase-text">
+          <h2>Exclusive VIP Network</h2>
+          <p>매장 앞에서 줄을 서는 시대는 끝났습니다.</p>
+          <p>Le Meyou는 상위 1%에게만 허락되는 퍼스널 쇼퍼 룸과 패스트트랙을 통해, 당신이 원하는 바로 그 피스를 가장 편안하게 확보해 드립니다.</p>
+        </div>
+        <div class="showcase-image">
+          <img src="./images/vip_lounge.png" alt="VIP Lounge">
+        </div>
+      </div>
+
+      <div class="showcase" id="trust">
+        <div class="showcase-text">
+          <h2>Valex Premium Delivery</h2>
+          <p>가장 귀한 자산은 그에 걸맞은 대우를 받아야 합니다.</p>
+          <p>Le Meyou는 명품 브랜드 공식 홈페이지에서 사용하는 현금 호송급 특수 물류망 'Valex(발렉스)'를 통해 고객님의 자택 문 앞까지 완벽하게 인도합니다.</p>
+        </div>
+        <div class="showcase-image">
+          <img src="./images/secure_delivery.png" alt="Valex Premium Delivery">
+        </div>
+      </div>
+    </section>
+
+    <section id="collection" class="gallery">
+      <h2 class="section-title">The Collection</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item"><img src="./images/collection_1.png" alt="Cashmere texture"></div>
+        <div class="gallery-item"><img src="./images/collection_3.png" alt="Lifestyle"></div>
+        <div class="gallery-item">
+          <img src="./images/hermes_bag.png" alt="Hermes Leather Bags">
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+      <h2 class="section-title">Personal Concierge</h2>
+      <p style="color: var(--text-muted); margin-bottom: 50px; max-width: 600px; margin-inline: auto; line-height: 2;">
+        찾고 계신 특정 브랜드의 피스나 레퍼런스 번호를 남겨주시면,<br>Le Meyou의 전담 소싱 매니저가 가장 조용하고 확실한 루트를 제안합니다.
       </p>
-    </div>
-  </section>
+      <button class="btn-primary">1:1 상담 예약</button>
+    </section>
+  </main>
 
-  <!-- Services Section -->
-  <section id="services" class="services-section">
-    <div class="service-row">
-      <div class="service-image">
-        <img src="./images/vip_lounge.png" alt="VIP Lounge">
-      </div>
-      <div class="service-text">
-        <h3>Private Sourcing</h3>
-        <p>에르메스, 샤넬 등 글로벌 하이엔드 브랜드의 희귀 재고를 실시간으로 파악하여 VIP 고객님만을 위한 1:1 맞춤형 소싱을 진행합니다.</p>
-      </div>
-    </div>
-    
-    <div class="service-row reverse">
-      <div class="service-image">
-        <img src="./images/secure_delivery.png" alt="Valex Delivery">
-      </div>
-      <div class="service-text">
-        <h3>Premium Last-Mile</h3>
-        <p>수십만 원을 호가하는 하이엔드 상품의 안전을 위해 일반 택배가 아닌 특수물류(Valex) 및 프리미엄 전담 배송망을 이용해 배송합니다.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- The Collection Gallery -->
-  <section id="collection" class="collection-section">
-    <div class="section-header">
-      <h2>The Collection</h2>
-      <p>Curated High-End Pieces</p>
-    </div>
-    <div class="gallery-grid">
-      <div class="gallery-item"><img src="./images/collection_1.png" alt="Cashmere texture"></div>
-      <div class="gallery-item"><img src="./images/hermes_bag.png" alt="Hermes Leather Bags"></div>
-      <div class="gallery-item"><img src="./images/collection_3.png" alt="Lifestyle"></div>
-    </div>
-  </section>
-
-  <!-- VIP Contact CTA -->
-  <section id="vip-contact" class="cta-section">
-    <div class="cta-content">
-      <h2>Experience The Ultimate Sourcing</h2>
-      <p>르미유의 VVIP 프리빗 소싱 서비스는 1:1 전담 매니저 제도로 운영됩니다.<br>원하시는 상품과 사이즈를 편하게 문의해 주세요.</p>
-      <a href="#" class="btn-kakao">VIP 상담 예약하기 (카카오톡 연결)</a>
-    </div>
-  </section>
-
-  <!-- Elegant Footer -->
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-brand">
-        <h2>Le Meyou</h2>
-        <p>The Epitome of Quiet Luxury Sourcing.</p>
-      </div>
-      <div class="footer-links">
-        <div class="link-group">
-          <h4>Legal</h4>
-          <a href="#">Terms of Service</a>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Return Policy</a>
-        </div>
-        <div class="link-group">
-          <h4>Social</h4>
-          <a href="#">Instagram</a>
-          <a href="#">Journal</a>
-        </div>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 Le Meyou Agency. All rights reserved.</p>
-    </div>
+  <footer>
+    <p>&copy; 2026 Le Meyou. All Rights Reserved. | The New Paradigm of Sourcing</p>
   </footer>
 
   <script src="app.js"></script>
+  <script>
+    // Add intersection observer for the new gallery items
+    document.addEventListener("DOMContentLoaded", () => {
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      
+      document.querySelectorAll('.gallery-item').forEach((el, index) => {
+        el.style.transitionDelay = `${index * 0.2}s`;
+        observer.observe(el);
+      });
+    });
+  </script>
 </body>
 </html>
