@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="admin-style.css">
-  <!-- Chart.js for BI -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -21,10 +20,10 @@
         <p>Admin Portal</p>
       </div>
       <nav class="sidebar-nav">
-        <a href="#" class="nav-item active" data-target="ai-sourcing"><span>🤖</span> AI 상품 수집</a>
-        <a href="#" class="nav-item" data-target="tax-cloud"><span>📊</span> 세무 & 클라우드</a>
-        <a href="#" class="nav-item" data-target="logistics-vip"><span>🚚</span> 물류 & VIP 실적</a>
-        <a href="#" class="nav-item" data-target="crm-bi"><span>👥</span> CRM & 통계</a>
+        <a href="#" class="nav-item active" data-target="ai-sourcing">AI 상품 수집</a>
+        <a href="#" class="nav-item" data-target="tax-cloud">세무 & 클라우드</a>
+        <a href="#" class="nav-item" data-target="logistics-vip">물류 & VIP 실적</a>
+        <a href="#" class="nav-item" data-target="crm-bi">CRM & 통계</a>
       </nav>
       <div class="sidebar-footer">
         <p>Logged in as <strong>Sourcing Manager</strong></p>
@@ -38,7 +37,7 @@
           <input type="text" placeholder="Search orders, tracking numbers, or clients...">
         </div>
         <div class="user-actions">
-          <button class="btn-notification">🔔</button>
+          <button class="btn-notification">Notifications</button>
           <div class="avatar">SM</div>
         </div>
       </header>
@@ -46,12 +45,28 @@
       <!-- TAB 1: AI Sourcing -->
       <section id="ai-sourcing" class="tab-content active">
         <h1 class="page-title">AI Sourcing & IP Defense</h1>
+        
         <div class="card">
-          <h3>글로벌 마켓 대량 수집 (URL 입력)</h3>
-          <div class="input-group">
-            <input type="url" placeholder="https://www.farfetch.com/...">
-            <button class="btn-primary">AI 수집 시작</button>
-          </div>
+          <h3>소싱 상품 등록 (Sourcing Team)</h3>
+          <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">
+            아래 정보를 입력하고 저장하면 Google Spread Sheet에 자동으로 데이터가 쌓입니다.
+          </p>
+          <form id="sourcingForm" class="sourcing-form">
+            <div class="input-group">
+              <label>소싱 웹사이트 URL</label>
+              <input type="url" id="sourceUrl" required placeholder="예: https://www.farfetch.com/...">
+            </div>
+            <div class="input-group">
+              <label>상품명</label>
+              <input type="text" id="productName" required placeholder="예: Loro Piana Summer Walk">
+            </div>
+            <div class="input-group">
+              <label>매입 원가 (KRW)</label>
+              <input type="number" id="costPrice" required placeholder="예: 850000">
+            </div>
+            <button type="submit" class="btn-primary" id="submitBtn">구글 시트에 저장하기</button>
+          </form>
+          <div id="formStatus" style="margin-top: 15px; font-weight: 500; font-size: 14px;"></div>
         </div>
         
         <div class="grid-2">
@@ -61,7 +76,7 @@
               <div class="original-img">Original (French)</div>
               <div class="translated-img">Translated (Korean) & Cleaned</div>
             </div>
-            <button class="btn-secondary" style="margin-top:15px; width:100%;">네이버 스마트스토어 전송</button>
+            <button class="btn-secondary" style="margin-top:15px; width:100%;">네이버 스마트스토어 전송 (준비 중)</button>
           </div>
           <div class="card">
             <h3>명품 특화 옵션 매핑</h3>

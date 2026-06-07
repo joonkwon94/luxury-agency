@@ -7,16 +7,11 @@ document.addEventListener("DOMContentLoaded", () => {
     item.addEventListener('click', (e) => {
       e.preventDefault();
       
-      // Remove active from all nav items
       navItems.forEach(nav => nav.classList.remove('active'));
-      
-      // Add active to clicked nav item
       item.classList.add('active');
       
-      // Hide all tabs
       tabContents.forEach(tab => tab.classList.remove('active'));
       
-      // Show target tab
       const targetId = item.getAttribute('data-target');
       document.getElementById(targetId).classList.add('active');
     });
@@ -53,6 +48,67 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
       }
+    });
+  }
+
+  // Google Sheets Integration Logic
+  const sourcingForm = document.getElementById('sourcingForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const formStatus = document.getElementById('formStatus');
+
+  // ** IMPORTANT: Replace this with your actual Web App URL after creating the Apps Script **
+  const GOOGLE_SCRIPT_URL = "YOUR_GOOGLE_SCRIPT_WEB_APP_URL";
+
+  if (sourcingForm) {
+    sourcingForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const sourceUrl = document.getElementById('sourceUrl').value;
+      const productName = document.getElementById('productName').value;
+      const costPrice = document.getElementById('costPrice').value;
+
+      submitBtn.disabled = true;
+      submitBtn.innerText = '저장 중...';
+      formStatus.innerText = '';
+      formStatus.style.color = 'inherit';
+
+      if(GOOGLE_SCRIPT_URL === "YOUR_GOOGLE_SCRIPT_WEB_APP_URL") {
+          formStatus.innerText = "❌ 경고: 구글 Apps Script 웹앱 URL이 연동되지 않았습니다. 코드를 확인해주세요.";
+          formStatus.style.color = "red";
+          submitBtn.disabled = false;
+          submitBtn.innerText = '구글 시트에 저장하기';
+          return;
+      }
+
+      // Send data to Google Sheets via Apps Script Web App
+      fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Bypass CORS for simple POST
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          'url': sourceUrl,
+          'product': productName,
+          'cost': costPrice,
+          'timestamp': new Date().toISOString()
+        })
+      })
+      .then(response => {
+        // Because of no-cors, response is opaque. We assume success if no network error.
+        formStatus.innerText = '✅ 성공적으로 구글 시트에 저장되었습니다!';
+        formStatus.style.color = 'green';
+        sourcingForm.reset();
+      })
+      .catch(error => {
+        console.error('Error!', error.message);
+        formStatus.innerText = '❌ 저장 중 오류가 발생했습니다.';
+        formStatus.style.color = 'red';
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerText = '구글 시트에 저장하기';
+      });
     });
   }
 });

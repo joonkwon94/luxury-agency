@@ -123,7 +123,8 @@ body {
 .btn-notification {
   background: none;
   border: none;
-  font-size: 20px;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
 }
 
@@ -194,6 +195,24 @@ body {
   border-radius: 6px;
 }
 
+.sourcing-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.sourcing-form .input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sourcing-form label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
 .btn-primary, .btn-secondary {
   padding: 12px 20px;
   border-radius: 6px;
@@ -210,6 +229,11 @@ body {
 
 .btn-primary:hover {
   background-color: var(--primary-dark);
+}
+
+.btn-primary:disabled {
+  background-color: #cbd5e1;
+  cursor: not-allowed;
 }
 
 .btn-secondary {
