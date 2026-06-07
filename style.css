@@ -611,6 +611,283 @@ nav a.active {
   color: var(--text-main);
 }
 
+/* ============================================================
+   BY INVITATION ONLY
+   ============================================================ */
+.invitation-section {
+  background-color: #1a1a1a;
+  padding: 100px 10%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.invitation-rule {
+  width: 100%;
+  max-width: 780px;
+  height: 1px;
+  background-color: #d4af37;
+  opacity: 0.55;
+  margin: 0 auto;
+}
+
+.invitation-content {
+  padding: 72px 0;
+  max-width: 780px;
+}
+
+.invitation-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #d4af37;
+  margin-bottom: 36px;
+  font-weight: 300;
+  opacity: 0.9;
+}
+
+.invitation-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 400;
+  font-style: italic;
+  color: #ffffff;
+  line-height: 1.35;
+  letter-spacing: 1px;
+  margin-bottom: 40px;
+}
+
+.invitation-sub {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 2.2;
+  letter-spacing: 0.5px;
+  margin-bottom: 52px;
+  font-weight: 300;
+}
+
+.btn-invitation {
+  padding: 15px 44px;
+  background: transparent;
+  color: #d4af37;
+  border: 1px solid #d4af37;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+
+.btn-invitation:hover {
+  background: #d4af37;
+  color: #1a1a1a;
+}
+
+/* ============================================================
+   HOW IT WORKS — PROCESS STEPS
+   ============================================================ */
+.process-section {
+  background-color: var(--bg-color);
+  padding: 120px 8%;
+  text-align: center;
+}
+
+.process-subtitle {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 1rem;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  margin-top: -40px;
+  margin-bottom: 80px;
+  font-weight: 300;
+}
+
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Hairline connecting the steps */
+.process-steps::before {
+  content: '';
+  position: absolute;
+  top: 36px;
+  left: calc(12.5% + 8px);
+  right: calc(12.5% + 8px);
+  height: 1px;
+  background: var(--border-color);
+  z-index: 0;
+}
+
+.process-step {
+  position: relative;
+  padding: 0 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.process-step.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.process-step:nth-child(2) { transition-delay: 0.15s; }
+.process-step:nth-child(3) { transition-delay: 0.30s; }
+.process-step:nth-child(4) { transition-delay: 0.45s; }
+
+.process-connector {
+  display: none; /* decorative; actual line drawn via ::before pseudo */
+}
+
+.process-numeral {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: var(--accent-color);
+  width: 72px;
+  height: 72px;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-color);
+  position: relative;
+  z-index: 1;
+  margin-bottom: 32px;
+  letter-spacing: 1px;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.process-step:hover .process-numeral {
+  border-color: var(--accent-color);
+  color: #2b2b2b;
+}
+
+.process-step-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.process-step-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--accent-color);
+  margin-bottom: 20px;
+}
+
+.process-step-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.85;
+  font-weight: 300;
+  max-width: 220px;
+}
+
+/* ============================================================
+   CLIENT TESTIMONIALS
+   ============================================================ */
+.testimonials-section {
+  background-color: #f7f6f4;
+  padding: 120px 8%;
+  text-align: center;
+  border-top: 1px solid var(--border-color);
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.testimonial-card {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  padding: 52px 40px 44px;
+  text-align: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.testimonial-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.testimonial-card:nth-child(2) { transition-delay: 0.15s; }
+.testimonial-card:nth-child(3) { transition-delay: 0.30s; }
+
+.testimonial-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.07);
+}
+
+.testimonial-mark {
+  font-family: 'Playfair Display', serif;
+  font-size: 4rem;
+  color: #d4af37;
+  line-height: 1;
+  display: block;
+  opacity: 0.75;
+}
+
+.testimonial-mark.open {
+  align-self: flex-start;
+  margin-bottom: -12px;
+}
+
+.testimonial-mark.close {
+  align-self: flex-end;
+  margin-top: -12px;
+}
+
+.testimonial-text {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  line-height: 2;
+  font-weight: 300;
+  font-style: italic;
+  flex: 1;
+  padding: 0 4px;
+}
+
+.testimonial-attribution {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--accent-color);
+  margin-top: 28px;
+  font-weight: 300;
+}
+
 /* ─── Responsive ──────────────────────────────────────────── */
 @media (max-width: 768px) {
   .hero h1 { font-size: 2.5rem; }

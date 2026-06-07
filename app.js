@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }, { threshold: 0.1 });
 
   // Existing elements animation
-  document.querySelectorAll('.feature-card, .showcase-text, .showcase-image').forEach(el => {
+  document.querySelectorAll('.feature-card, .showcase-text, .showcase-image, .process-step, .testimonial-card').forEach(el => {
     observer.observe(el);
   });
 
