@@ -1,13 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Navigation Scroll Effect
+  // ── Navbar: transparent over hero, solid after 80px ──────────────────
   const header = document.getElementById('header');
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-      header.classList.add('scrolled');
+
+  const updateNav = () => {
+    if (window.scrollY > 80) {
+      header.classList.remove('nav-transparent');
+      header.classList.add('nav-scrolled');
     } else {
-      header.classList.remove('scrolled');
+      header.classList.remove('nav-scrolled');
+      header.classList.add('nav-transparent');
     }
-  });
+  };
+
+  // Set initial state
+  updateNav();
+  window.addEventListener('scroll', updateNav, { passive: true });
 
   // Intersection Observer (declared FIRST so renderGallery can use it)
   const observer = new IntersectionObserver((entries, observerInstance) => {
