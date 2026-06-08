@@ -1,181 +1,316 @@
-document.addEventListener("DOMContentLoaded", () => {
-  // ── Navbar: transparent over hero, solid after 80px ──────────────────
-  const header = document.getElementById('header');
+/* ═══════════════════════════════════════════════════════════════════════
+   Le Meyou — Premium Motion Engine
+   Ultra-smooth animations for a luxury sourcing experience.
+   ═══════════════════════════════════════════════════════════════════════ */
 
-  const updateNav = () => {
-    if (window.scrollY > 80) {
-      header.classList.remove('nav-transparent');
-      header.classList.add('nav-scrolled');
-    } else {
-      header.classList.remove('nav-scrolled');
-      header.classList.add('nav-transparent');
-    }
+(() => {
+  "use strict";
+
+  /* ── Constants ──────────────────────────────────────────────────────── */
+  const GOOGLE_SCRIPT_URL =
+    "https://script.google.com/macros/s/AKfycbyfOT2ZntPayJ7_o1IqfHHKqeDfU7vVC36G5lvk8lsSojgDeeSXwzy7BTxIe7Ua-NfylQ/exec";
+
+  const NAVBAR_SCROLL_THRESHOLD = 60;
+  const KAKAO_SHOW_OFFSET       = 400;
+  const BACK_TO_TOP_OFFSET      = 600;
+  const LOADER_DURATION_MS      = 1800;
+  const HERO_OVERLAY_MIN        = 0.38;
+  const HERO_OVERLAY_MAX        = 0.65;
+  const STAGGER_DELAY_S         = 0.1;   // seconds between each grid child
+
+  /* ── Utility: cubic-bezier-style easing for smooth scroll ──────────── */
+  const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
+
+  const smoothScrollTo = (targetY, duration = 1000) => {
+    const startY  = window.scrollY;
+    const delta   = targetY - startY;
+    const startTs = performance.now();
+
+    const step = (now) => {
+      const elapsed  = now - startTs;
+      const progress = Math.min(elapsed / duration, 1);
+      window.scrollTo(0, startY + delta * easeOutQuart(progress));
+      if (progress < 1) requestAnimationFrame(step);
+    };
+
+    requestAnimationFrame(step);
   };
 
-  // Set initial state
-  updateNav();
-  window.addEventListener('scroll', updateNav, { passive: true });
+  /* ══════════════════════════════════════════════════════════════════════
+     DOM Ready
+     ══════════════════════════════════════════════════════════════════════ */
+  document.addEventListener("DOMContentLoaded", () => {
 
-  // Intersection Observer (declared FIRST so renderGallery can use it)
-  const observer = new IntersectionObserver((entries, observerInstance) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observerInstance.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
+    /* ── 0. CSS smooth-scroll baseline ─────────────────────────────────
+       Injected via JS so we never touch style.css                      */
+    document.documentElement.style.scrollBehavior = "smooth";
 
-  // Existing elements animation
-  document.querySelectorAll('.feature-card, .showcase-text, .showcase-image, .process-step, .testimonial-card').forEach(el => {
-    observer.observe(el);
-  });
+    /* ── 1. Custom smooth-scroll for all anchor links ──────────────── */
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener("click", (e) => {
+        const id = anchor.getAttribute("href");
+        if (!id || id === "#") return;
+        const target = document.querySelector(id);
+        if (!target) return;
 
-  // Dynamic Gallery
-  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyfOT2ZntPayJ7_o1IqfHHKqeDfU7vVC36G5lvk8lsSojgDeeSXwzy7BTxIe7Ua-NfylQ/exec";
-  const galleryGrid = document.getElementById('dynamic-gallery');
+        e.preventDefault();
+        const headerHeight = document.getElementById("header")?.offsetHeight || 0;
+        const top = target.getBoundingClientRect().top + window.scrollY - headerHeight;
+        smoothScrollTo(top, 1100);
 
-  const demoItems = [
-    {
-      brand: "Hermès",
-      product: "Birkin 25 — Togo Etoupe",
-      imageUrl: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&q=80"
-    },
-    {
-      brand: "Chanel",
-      product: "Classic Flap — Black Caviar",
-      imageUrl: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80"
-    },
-    {
-      brand: "Louis Vuitton",
-      product: "Capucines MM — Cognac",
-      imageUrl: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80"
-    },
-    {
-      brand: "Hermès",
-      product: "Kelly 28 — Gold Epsom",
-      imageUrl: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=800&q=80"
-    },
-    {
-      brand: "Bottega Veneta",
-      product: "Jodie Hobo — Intrecciato",
-      imageUrl: "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&q=80"
-    },
-    {
-      brand: "Dior",
-      product: "Lady Dior MM — Cannage Black",
-      imageUrl: "https://images.unsplash.com/photo-1594938298603-c8148c4b4a8e?w=800&q=80"
-    }
-  ];
-
-  const renderGallery = (liveItems) => {
-    if (!galleryGrid) return;
-    galleryGrid.innerHTML = '';
-    const allItems = [...liveItems, ...demoItems];
-
-    allItems.forEach((item, index) => {
-      const imageUrl = item.imageUrl || item['이미지 URL'] || '';
-      const brand = item.brand || item['브랜드명'] || 'Le Meyou';
-      const product = item.product || item['상품명'] || 'Exclusive Piece';
-
-      const galleryItem = document.createElement('div');
-      galleryItem.className = 'gallery-item';
-      galleryItem.style.transitionDelay = `${index * 0.12}s`;
-
-      galleryItem.innerHTML = `
-        <img src="${imageUrl}" alt="${brand} ${product}" loading="lazy" onerror="this.parentElement.style.display='none'">
-        <div class="gallery-caption">
-          <h4>${brand}</h4>
-          <p>${product}</p>
-        </div>
-      `;
-
-      galleryGrid.appendChild(galleryItem);
-      observer.observe(galleryItem);
-    });
-  };
-
-  if (galleryGrid) {
-    // Show demo items immediately, then update if live data available
-    renderGallery([]);
-
-    fetch(GOOGLE_SCRIPT_URL)
-      .then(response => response.json())
-      .then(data => {
-        const displayItems = data.filter(item => {
-          const flag = (item['홈페이지 전시 여부'] || '').toString().trim().toUpperCase();
-          return ['Y', 'YES', '전시', 'TRUE'].includes(flag);
-        });
-        if (displayItems.length > 0) {
-          renderGallery(displayItems);
-        }
-      })
-      .catch(() => {
-        // Demo items already showing, do nothing
+        /* Update URL without jump */
+        history.pushState(null, "", id);
       });
-  }
-
-  // ─── Page Loader ────────────────────────────────────────────────
-  const loader = document.getElementById('page-loader');
-  if (loader) {
-    setTimeout(() => {
-      loader.classList.add('hidden');
-    }, 1500);
-  }
-
-  // ─── Floating KakaoTalk & Back-to-Top visibility on scroll ──────
-  const kakaoFloat = document.getElementById('kakao-float');
-  const backToTop  = document.getElementById('back-to-top');
-
-  window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY;
-
-    // Kakao button appears after 300px
-    if (kakaoFloat) {
-      if (scrollY > 300) {
-        kakaoFloat.classList.add('visible');
-      } else {
-        kakaoFloat.classList.remove('visible');
-      }
-    }
-
-    // Back-to-top appears after 500px
-    if (backToTop) {
-      if (scrollY > 500) {
-        backToTop.classList.add('visible');
-      } else {
-        backToTop.classList.remove('visible');
-      }
-    }
-  });
-
-  // Back-to-top click handler
-  if (backToTop) {
-    backToTop.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-  }
 
-  // ─── Active Nav Highlighting (IntersectionObserver) ─────────────
-  const navLinks = document.querySelectorAll('nav a[href^="#"]');
-  const sectionIds = [...navLinks].map(a => a.getAttribute('href').slice(1));
-  const sections = sectionIds
-    .map(id => document.getElementById(id))
-    .filter(Boolean);
+    /* ── 2. Unified Intersection Observer — scroll reveals ──────────── */
+    const revealObserver = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
 
-  const navObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const id = entry.target.id;
-        navLinks.forEach(link => {
-          link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+          const el = entry.target;
+          el.classList.add("revealed");
+          obs.unobserve(el);
         });
-      }
-    });
-  }, {
-    rootMargin: '-30% 0px -60% 0px',
-    threshold: 0
-  });
+      },
+      { rootMargin: "-10%", threshold: 0.1 }
+    );
 
-  sections.forEach(sec => navObserver.observe(sec));
-});
+    /* Observe every revealable element currently in the DOM */
+    const REVEAL_SELECTORS = [
+      ".feature-card",
+      ".showcase-text",
+      ".showcase-image",
+      ".gallery-item",
+      ".process-step",
+      ".testimonial-card",
+      ".invitation-content",
+    ];
+
+    const observeRevealables = () => {
+      document
+        .querySelectorAll(REVEAL_SELECTORS.join(", "))
+        .forEach((el) => {
+          if (!el.classList.contains("revealed")) {
+            revealObserver.observe(el);
+          }
+        });
+    };
+
+    observeRevealables();
+
+    /* ── 2b. Stagger animations for grid children ──────────────────── */
+    const staggerGridItems = () => {
+      const grids = document.querySelectorAll(
+        ".features-grid, .gallery-grid, .process-steps, .testimonials-grid"
+      );
+
+      grids.forEach((grid) => {
+        const children = grid.querySelectorAll(
+          ".feature-card, .gallery-item, .process-step, .testimonial-card"
+        );
+        children.forEach((child, idx) => {
+          child.style.transitionDelay = `${idx * STAGGER_DELAY_S}s`;
+        });
+      });
+    };
+
+    staggerGridItems();
+
+    /* ── 3. Hero Parallax — overlay opacity deepens on scroll ────── */
+    const heroOverlay = document.querySelector(".hero-overlay");
+    const heroSection = document.querySelector(".hero");
+
+    let heroH = heroSection ? heroSection.offsetHeight : window.innerHeight;
+    window.addEventListener("resize", () => {
+      heroH = heroSection ? heroSection.offsetHeight : window.innerHeight;
+    });
+
+    /* ── 4. Navbar — transparent ↔ scrolled ────────────────────────── */
+    const header = document.getElementById("header");
+
+    /* ── 7. Floating Buttons ───────────────────────────────────────── */
+    const kakaoFloat = document.getElementById("kakao-float");
+    const backToTop  = document.getElementById("back-to-top");
+
+    /* Combined scroll handler via rAF for butter-smooth performance   */
+    let ticking = false;
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+
+      requestAnimationFrame(() => {
+        const sy = window.scrollY;
+
+        /* Navbar */
+        if (header) {
+          if (sy > NAVBAR_SCROLL_THRESHOLD) {
+            header.classList.remove("nav-transparent");
+            header.classList.add("nav-scrolled");
+          } else {
+            header.classList.remove("nav-scrolled");
+            header.classList.add("nav-transparent");
+          }
+        }
+
+        /* Hero overlay parallax */
+        if (heroOverlay) {
+          const ratio    = Math.min(sy / heroH, 1);
+          const opacity  = HERO_OVERLAY_MIN + (HERO_OVERLAY_MAX - HERO_OVERLAY_MIN) * ratio;
+          heroOverlay.style.opacity = opacity;
+        }
+
+        /* Floating buttons */
+        if (kakaoFloat) {
+          kakaoFloat.classList.toggle("visible", sy > KAKAO_SHOW_OFFSET);
+        }
+        if (backToTop) {
+          backToTop.classList.toggle("visible", sy > BACK_TO_TOP_OFFSET);
+        }
+
+        ticking = false;
+      });
+    };
+
+    /* Set initial states */
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    /* Back-to-top click */
+    if (backToTop) {
+      backToTop.addEventListener("click", () => {
+        smoothScrollTo(0, 1000);
+      });
+    }
+
+    /* ── 5. Gallery ────────────────────────────────────────────────── */
+    const galleryGrid = document.getElementById("dynamic-gallery");
+
+    const demoItems = [
+      {
+        brand: "Hermès",
+        product: "Birkin 25 — Togo Etoupe",
+        imageUrl:
+          "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&q=80",
+      },
+      {
+        brand: "Chanel",
+        product: "Classic Flap — Black Caviar",
+        imageUrl:
+          "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80",
+      },
+      {
+        brand: "Louis Vuitton",
+        product: "Capucines MM — Cognac",
+        imageUrl:
+          "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80",
+      },
+      {
+        brand: "Hermès",
+        product: "Kelly 28 — Gold Epsom",
+        imageUrl:
+          "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=800&q=80",
+      },
+      {
+        brand: "Bottega Veneta",
+        product: "Jodie Hobo — Intrecciato",
+        imageUrl:
+          "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&q=80",
+      },
+      {
+        brand: "Dior",
+        product: "Lady Dior MM — Cannage Black",
+        imageUrl:
+          "https://images.unsplash.com/photo-1594938298603-c8148c4b4a8e?w=800&q=80",
+      },
+    ];
+
+    const renderGallery = (liveItems) => {
+      if (!galleryGrid) return;
+      galleryGrid.innerHTML = "";
+
+      const allItems = [...liveItems, ...demoItems];
+
+      allItems.forEach((item, index) => {
+        const imageUrl = item.imageUrl || item["이미지 URL"] || "";
+        const brand    = item.brand    || item["브랜드명"]   || "Le Meyou";
+        const product  = item.product  || item["상품명"]     || "Exclusive Piece";
+
+        const el = document.createElement("div");
+        el.className = "gallery-item";
+        el.style.transitionDelay = `${index * STAGGER_DELAY_S}s`;
+
+        el.innerHTML = `
+          <img src="${imageUrl}" alt="${brand} ${product}" loading="lazy"
+               onerror="this.parentElement.style.display='none'">
+          <div class="gallery-caption">
+            <h4>${brand}</h4>
+            <p>${product}</p>
+          </div>
+        `;
+
+        galleryGrid.appendChild(el);
+        revealObserver.observe(el);
+      });
+    };
+
+    if (galleryGrid) {
+      /* Show demo items immediately */
+      renderGallery([]);
+
+      /* Attempt to fetch live items from Google Sheets */
+      fetch(GOOGLE_SCRIPT_URL)
+        .then((res) => res.json())
+        .then((data) => {
+          const displayItems = data.filter((item) => {
+            const flag = (item["홈페이지 전시 여부"] || "")
+              .toString()
+              .trim()
+              .toUpperCase();
+            return ["Y", "YES", "전시", "TRUE"].includes(flag);
+          });
+          if (displayItems.length > 0) {
+            renderGallery(displayItems);
+          }
+        })
+        .catch(() => {
+          /* Demo items already rendered — fail silently */
+        });
+    }
+
+    /* ── 6. Page Loader ────────────────────────────────────────────── */
+    const loader = document.getElementById("page-loader");
+    if (loader) {
+      setTimeout(() => {
+        loader.classList.add("hidden");
+      }, LOADER_DURATION_MS);
+    }
+
+    /* ── 8. Active Nav Highlighting ────────────────────────────────── */
+    const navLinks   = document.querySelectorAll('nav a[href^="#"]');
+    const sectionIds = [...navLinks].map((a) => a.getAttribute("href").slice(1));
+    const sections   = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
+
+    const navObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const id = entry.target.id;
+          navLinks.forEach((link) => {
+            link.classList.toggle(
+              "active",
+              link.getAttribute("href") === `#${id}`
+            );
+          });
+        });
+      },
+      { rootMargin: "-30% 0px -60% 0px", threshold: 0 }
+    );
+
+    sections.forEach((sec) => navObserver.observe(sec));
+  });
+})();
