@@ -227,20 +227,21 @@
       },
     ];
 
-    const renderGallery = (liveItems) => {
+    let globalItems = [];
+
+    const renderGallery = (itemsToRender) => {
       if (!galleryGrid) return;
       galleryGrid.innerHTML = "";
 
-      const allItems = [...liveItems, ...demoItems];
-
-      allItems.forEach((item, index) => {
+      itemsToRender.forEach((item, index) => {
         const imageUrl = item.imageUrl || item["이미지 URL"] || "";
         const brand    = item.brand    || item["브랜드명"]   || "Le Meyou";
         const product  = item.product  || item["상품명"]     || "Exclusive Piece";
+        const priceStr = item.sellingPrice ? "₩" + Number(item.sellingPrice).toLocaleString() : (item.price || item["판매가"] || "Price Upon Request");
 
         const el = document.createElement("div");
         el.className = "gallery-item";
-        el.style.transitionDelay = `${index * STAGGER_DELAY_S}s`;
+        el.style.transitionDelay = `${(index % 8) * STAGGER_DELAY_S}s`;
 
         el.innerHTML = `
           <img src="${imageUrl}" alt="${brand} ${product}" loading="lazy"
@@ -248,7 +249,7 @@
           <div class="gallery-caption">
             <h4>${brand}</h4>
             <p>${product}</p>
-            <p class="gallery-price" style="margin-top: 12px; font-weight: 500; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 2.5px; opacity: 0.9; color: #c9a96e;">${item.price || item["가격"] || "Price Upon Request"}</p>
+            <p class="gallery-price" style="margin-top: 12px; font-weight: 500; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 2.5px; opacity: 0.9; color: #c9a96e;">${priceStr}</p>
           </div>
         `;
 
@@ -257,9 +258,54 @@
       });
     };
 
+    const initGallery = (liveItems) => {
+      // Remove duplicates by product name (favoring live items)
+      const all = [...liveItems, ...demoItems];
+      const seen = new Set();
+      globalItems = all.filter(item => {
+        const prod = item.product || item["상품명"];
+        if (seen.has(prod)) return false;
+        seen.add(prod);
+        return true;
+      });
+      renderGallery(globalItems);
+    };
+
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        const filter = e.target.getAttribute('data-filter');
+        
+        let filtered = globalItems;
+        if (filter !== 'all') {
+          if (filter === 'Jewelry') {
+            filtered = globalItems.filter(item => {
+              const cat = item.category || item['카테고리'] || '';
+              return cat.includes('Jewelry') || cat.includes('주얼리') || ['Van Cleef & Arpels', 'Cartier', 'Bulgari', 'Tiffany & Co.'].includes(item.brand || item['브랜드명']);
+            });
+          } else if (filter === 'Others') {
+            const mainBrands = ['Hermès', 'Chanel', 'Rolex', 'Patek Philippe', 'Van Cleef & Arpels', 'Cartier'];
+            filtered = globalItems.filter(item => {
+              const brand = item.brand || item['브랜드명'] || '';
+              return !mainBrands.includes(brand);
+            });
+          } else {
+            filtered = globalItems.filter(item => {
+              const brand = item.brand || item['브랜드명'] || '';
+              return brand.includes(filter);
+            });
+          }
+        }
+        
+        renderGallery(filtered);
+      });
+    });
+
     if (galleryGrid) {
       /* Show demo items immediately */
-      renderGallery([]);
+      initGallery([]);
 
       /* Attempt to fetch live items from Google Sheets */
       fetch(GOOGLE_SCRIPT_URL)
@@ -273,7 +319,10 @@
             return ["Y", "YES", "전시", "TRUE"].includes(flag);
           });
           if (displayItems.length > 0) {
-            renderGallery(displayItems);
+            initGallery(displayItems);
+            // Re-apply active filter if fetch completes after a user clicked a filter
+            const activeFilterBtn = document.querySelector('.filter-btn.active');
+            if(activeFilterBtn) activeFilterBtn.click();
           }
         })
         .catch(() => {

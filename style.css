@@ -388,6 +388,49 @@ section {
   background: rgba(255,255,255,0.05);
 }
 
+/* Brand Filters */
+.brand-filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.filter-btn {
+  background: transparent;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding-bottom: 5px;
+  position: relative;
+  transition: color 0.4s ease;
+}
+
+.filter-btn:hover, .filter-btn.active {
+  color: var(--text-main);
+}
+
+.filter-btn::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--text-main);
+  transition: width 0.4s ease;
+}
+
+.filter-btn:hover::after, .filter-btn.active::after {
+  width: 100%;
+}
+
 /* Gallery Section */
 .gallery {
   padding: 180px 8%;
