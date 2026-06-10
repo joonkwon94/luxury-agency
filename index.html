@@ -106,6 +106,7 @@
         <button class="filter-btn" data-filter="Patek Philippe">Patek Philippe</button>
         <button class="filter-btn" data-filter="Jewelry">Jewelry</button>
         <button class="filter-btn" data-filter="Others">Others</button>
+        <button class="filter-btn filter-vault" data-filter="Vault">🔒 The Vault</button>
       </div>
 
       <div class="gallery-grid" id="dynamic-gallery">
@@ -167,10 +168,66 @@
       <p style="color: var(--text-muted); margin-bottom: 50px; max-width: 600px; margin-inline: auto; line-height: 2;">
         찾고 계신 특정 브랜드의 피스나 레퍼런스 번호를 남겨주시면,<br>Le Meyou의 전담 소싱 매니저가 가장 조용하고 확실한 루트를 제안합니다.
       </p>
-      <button class="btn-primary">1:1 상담 예약</button>
+      <button class="btn-primary" id="open-concierge-btn">1:1 프라이빗 소싱 의뢰</button>
     </section>
     <div class="section-divider"></div>
   </main>
+
+  <!-- The Vault Modal -->
+  <div id="vault-modal" class="modal-overlay">
+    <div class="modal-content vault-content">
+      <button class="modal-close" id="close-vault-btn">&times;</button>
+      <h2>The Vault</h2>
+      <p>상위 0.1% VIP를 위한 오프마켓 피스.<br>액세스 코드를 입력해 주십시오.</p>
+      <input type="password" id="vault-passcode" placeholder="Enter Passcode" class="modal-input">
+      <button class="btn-primary" id="submit-vault-btn" style="margin-top:20px;">Unlock</button>
+      <p id="vault-error" style="color: #d4af37; margin-top: 15px; font-size: 11px; opacity: 0;"></p>
+    </div>
+  </div>
+
+  <!-- Concierge Sourcing Modal -->
+  <div id="concierge-modal" class="modal-overlay">
+    <div class="modal-content">
+      <button class="modal-close" id="close-concierge-btn">&times;</button>
+      <div class="concierge-steps">
+        <div class="step active" id="c-step-1">
+          <h2>Step I. Category</h2>
+          <p>찾으시는 품목을 선택해 주십시오.</p>
+          <div class="concierge-options">
+            <button class="c-opt-btn" data-val="Bag">Bag (가방)</button>
+            <button class="c-opt-btn" data-val="Watch">Watch (시계)</button>
+            <button class="c-opt-btn" data-val="Jewelry">Jewelry (주얼리)</button>
+          </div>
+        </div>
+        <div class="step" id="c-step-2">
+          <h2>Step II. Reference</h2>
+          <p>정확한 모델명이나 레퍼런스 번호를 입력해 주십시오.</p>
+          <input type="text" id="c-ref" placeholder="e.g. Birkin 25 Togo Noir GHW" class="modal-input">
+          <button class="btn-primary c-next-btn">Next</button>
+        </div>
+        <div class="step" id="c-step-3">
+          <h2>Step III. Timeline</h2>
+          <p>희망하시는 소싱 기한을 선택해 주십시오.</p>
+          <div class="concierge-options">
+            <button class="c-opt-btn-2" data-val="ASAP">최대한 빠르게 (프리미엄 감수)</button>
+            <button class="c-opt-btn-2" data-val="1 Month">1개월 이내</button>
+            <button class="c-opt-btn-2" data-val="Flexible">여유 있음 (최적가 탐색)</button>
+          </div>
+        </div>
+        <div class="step" id="c-step-4">
+          <h2>Step IV. Contact</h2>
+          <p>전담 매니저가 회신드릴 연락처를 남겨주십시오.</p>
+          <input type="text" id="c-contact" placeholder="Phone or Kakao ID" class="modal-input">
+          <button class="btn-primary" id="c-submit-btn">소싱 의뢰 완료</button>
+        </div>
+        <div class="step" id="c-step-5">
+          <h2>Request Received</h2>
+          <p style="color: #c9a96e; margin-top:20px;">의뢰가 안전하게 접수되었습니다.</p>
+          <p style="font-size: 13px; margin-top:10px;">전담 매니저가 24시간 내에 연락드리겠습니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <footer>
     <p class="footer-brand">Le Meyou</p>

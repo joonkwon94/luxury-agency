@@ -246,7 +246,13 @@
         const imageUrl = item.imageUrl || item["이미지 URL"] || "";
         const brand    = item.brand    || item["브랜드명"]   || "Le Meyou";
         const product  = item.product  || item["상품명"]     || "Exclusive Piece";
-        const priceStr = item.sellingPrice ? "₩" + Number(item.sellingPrice).toLocaleString() : (item.price || item["판매가"] || "Price Upon Request");
+        let priceStr = item.sellingPrice ? "₩" + Number(item.sellingPrice).toLocaleString() : (item.price || item["판매가"] || "Price Upon Request");
+
+        if (item.sellingPrice && item.sellingPrice >= 50000000) {
+          priceStr = "Price Upon Request <a href='#contact' style='text-decoration:underline; margin-left:5px; color:#c9a96e;'>[Inquire]</a>";
+        } else if (item.price === "Price Upon Request") {
+          priceStr = "Price Upon Request <a href='#contact' style='text-decoration:underline; margin-left:5px; color:#c9a96e;'>[Inquire]</a>";
+        }
 
         const el = document.createElement("div");
         el.className = "gallery-item";
@@ -288,6 +294,11 @@
         const filter = e.target.getAttribute('data-filter');
         
         let filtered = globalItems;
+        if (filter === 'Vault') {
+          openVault();
+          return;
+        }
+
         if (filter !== 'all') {
           if (filter === 'Jewelry') {
             filtered = globalItems.filter(item => {
@@ -338,6 +349,112 @@
           /* Demo items already rendered — fail silently */
         });
     }
+
+    /* ── 9. Modals & Concierge Flow ────────────────────────────────── */
+    const vaultModal = document.getElementById("vault-modal");
+    const conciergeModal = document.getElementById("concierge-modal");
+    
+    const closeVaultBtn = document.getElementById("close-vault-btn");
+    const submitVaultBtn = document.getElementById("submit-vault-btn");
+    const vaultPasscode = document.getElementById("vault-passcode");
+    const vaultError = document.getElementById("vault-error");
+
+    const openVault = () => {
+      if(vaultModal) vaultModal.classList.add("active");
+    };
+    
+    if(closeVaultBtn) closeVaultBtn.addEventListener("click", () => {
+      vaultModal.classList.remove("active");
+      if(vaultPasscode) vaultPasscode.value = "";
+      if(vaultError) vaultError.style.opacity = 0;
+      // Reset filter to ALL if they cancel vault
+      const allFilterBtn = document.querySelector('.filter-btn[data-filter="all"]');
+      if (allFilterBtn) allFilterBtn.click();
+    });
+
+    if(submitVaultBtn) submitVaultBtn.addEventListener("click", () => {
+      if(vaultPasscode.value === "VIP2026") {
+        vaultModal.classList.remove("active");
+        const vaultItems = [
+          {
+            brand: "Hermès",
+            product: "Birkin 20 Faubourg Sellier",
+            imageUrl: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=800&q=80",
+            price: "Price Upon Request",
+            sellingPrice: 400000000
+          },
+          {
+            brand: "Patek Philippe",
+            product: "Grand Complications 5208P",
+            imageUrl: "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?w=800&q=80",
+            price: "Price Upon Request",
+            sellingPrice: 1200000000
+          }
+        ];
+        renderGallery(vaultItems);
+      } else {
+        vaultError.innerText = "Invalid Access Code.";
+        vaultError.style.opacity = 1;
+      }
+    });
+
+    // Concierge Logic
+    const openConciergeBtn = document.getElementById("open-concierge-btn");
+    const closeConciergeBtn = document.getElementById("close-concierge-btn");
+    let currentStep = 1;
+
+    const showStep = (step) => {
+      document.querySelectorAll(".concierge-steps .step").forEach(s => s.classList.remove("active"));
+      const stepEl = document.getElementById(`c-step-${step}`);
+      if(stepEl) stepEl.classList.add("active");
+    };
+
+    if(openConciergeBtn) openConciergeBtn.addEventListener("click", () => {
+      if(conciergeModal) {
+        conciergeModal.classList.add("active");
+        currentStep = 1;
+        showStep(currentStep);
+      }
+    });
+
+    if(closeConciergeBtn) closeConciergeBtn.addEventListener("click", () => {
+      conciergeModal.classList.remove("active");
+    });
+
+    document.querySelectorAll(".c-opt-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        currentStep = 2;
+        showStep(currentStep);
+      });
+    });
+
+    const cNextBtn = document.querySelector(".c-next-btn");
+    if(cNextBtn) cNextBtn.addEventListener("click", () => {
+      const ref = document.getElementById("c-ref").value;
+      if(ref.trim() !== "") {
+        currentStep = 3;
+        showStep(currentStep);
+      }
+    });
+
+    document.querySelectorAll(".c-opt-btn-2").forEach(btn => {
+      btn.addEventListener("click", () => {
+        currentStep = 4;
+        showStep(currentStep);
+      });
+    });
+
+    const cSubmitBtn = document.getElementById("c-submit-btn");
+    if(cSubmitBtn) cSubmitBtn.addEventListener("click", () => {
+      const contact = document.getElementById("c-contact").value;
+      if(contact.trim() !== "") {
+        currentStep = 5;
+        showStep(currentStep);
+        setTimeout(() => {
+          conciergeModal.classList.remove("active");
+        }, 3000);
+      }
+    });
 
     /* ── 6. Page Loader ────────────────────────────────────────────── */
     const loader = document.getElementById("page-loader");
