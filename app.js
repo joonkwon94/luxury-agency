@@ -191,39 +191,39 @@
     const demoItems = [
       {
         brand: "Hermès",
-        product: "Birkin 25 — Togo Etoupe",
-        imageUrl:
-          "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&q=80",
+        product: "Birkin 25 Togo Noir Gold Hardware",
+        imageUrl: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&q=80",
+        price: "42,000,000 KRW"
       },
       {
         brand: "Chanel",
-        product: "Classic Flap — Black Caviar",
-        imageUrl:
-          "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&q=80",
+        product: "Classic Medium Flap Bag Black Caviar",
+        imageUrl: "https://images.unsplash.com/photo-1591561954557-26941169b49e?w=800&q=80",
+        price: "12,500,000 KRW"
       },
       {
-        brand: "Louis Vuitton",
-        product: "Capucines MM — Cognac",
-        imageUrl:
-          "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80",
+        brand: "Rolex",
+        product: "Cosmograph Daytona 116500LN",
+        imageUrl: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=800&q=80",
+        price: "41,000,000 KRW"
       },
       {
-        brand: "Hermès",
-        product: "Kelly 28 — Gold Epsom",
-        imageUrl:
-          "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=800&q=80",
+        brand: "Audemars Piguet",
+        product: "Royal Oak 15500ST",
+        imageUrl: "https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=800&q=80",
+        price: "70,000,000 KRW"
       },
       {
-        brand: "Bottega Veneta",
-        product: "Jodie Hobo — Intrecciato",
-        imageUrl:
-          "https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=800&q=80",
+        brand: "Van Cleef & Arpels",
+        product: "Vintage Alhambra Necklace Onyx",
+        imageUrl: "https://images.unsplash.com/photo-1599643478524-fb66f7248766?w=800&q=80",
+        price: "3,800,000 KRW"
       },
       {
-        brand: "Dior",
-        product: "Lady Dior MM — Cannage Black",
-        imageUrl:
-          "https://images.unsplash.com/photo-1594938298603-c8148c4b4a8e?w=800&q=80",
+        brand: "Cartier",
+        product: "Juste un Clou Necklace Rose Gold",
+        imageUrl: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80",
+        price: "5,500,000 KRW"
       },
     ];
 
@@ -248,6 +248,7 @@
           <div class="gallery-caption">
             <h4>${brand}</h4>
             <p>${product}</p>
+            <p class="gallery-price" style="margin-top: 12px; font-weight: 500; font-family: 'Inter', sans-serif; font-size: 10px; letter-spacing: 2.5px; opacity: 0.9; color: #c9a96e;">${item.price || item["가격"] || "Price Upon Request"}</p>
           </div>
         `;
 
