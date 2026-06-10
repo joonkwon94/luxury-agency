@@ -54,6 +54,15 @@
         if (!target) return;
 
         e.preventDefault();
+
+        /* If clicking Collection in navbar, reset filter to All to show everything */
+        if (id === "#collection") {
+          const allFilterBtn = document.querySelector('.filter-btn[data-filter="all"]');
+          if (allFilterBtn && !allFilterBtn.classList.contains('active')) {
+            allFilterBtn.click();
+          }
+        }
+
         const headerHeight = document.getElementById("header")?.offsetHeight || 0;
         const top = target.getBoundingClientRect().top + window.scrollY - headerHeight;
         smoothScrollTo(top, 1100);
